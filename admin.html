@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>RentTrek Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFE8DA;--bg-2:#E5DBC7;--paper:#F7F2E8;--ink:#1D2016;--ink-2:#4E5140;--ink-3:#7A7A66;
+  --moss:#3D4A2A;--moss-2:#5C6B3C;--sage:#A3AD7F;--bark:#5B3F2A;--clay:#A86A3D;--danger:#A3412F;
+  --line:rgba(29,32,22,.14);--ease:cubic-bezier(.16,1,.3,1);
+  --display:"Anton",Impact,sans-serif;--sans:"Inter Tight",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+img{display:block;max-width:100%}
+.mono{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.hidden{display:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:99px;padding:11px 18px;font-weight:600;font-size:14.5px;background:var(--moss);color:var(--paper);transition:background .25s,opacity .25s;white-space:nowrap}
+.btn:hover{background:var(--bark)}
+.btn:disabled{opacity:.5;cursor:wait}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--ink);background:transparent}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid rgba(163,65,47,.35)}
+.btn.danger:hover{background:var(--danger);color:#fff}
+.btn.sm{padding:7px 12px;font-size:13px}
+.icon-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);display:inline-grid;place-items:center;background:var(--paper)}
+.icon-btn:hover{border-color:var(--ink)}
+.icon-btn:disabled{opacity:.3;cursor:default}
+.icon-btn svg{width:16px;height:16px}
+
+/* demo banner */
+.demo{background:var(--clay);color:var(--paper);text-align:center;padding:9px 16px;font-size:13.5px}
+.demo b{font-weight:600}
+
+/* login */
+.login{min-height:calc(100vh - 40px);display:grid;place-items:center;padding:24px 16px}
+.login-card{width:min(400px,100%);background:var(--paper);border-radius:22px;padding:34px 28px;box-shadow:0 30px 60px -30px rgba(61,74,42,.35)}
+.login-card .logo{font-family:var(--display);font-size:40px;color:var(--moss);line-height:1}
+.login-card p{color:var(--ink-3);margin:6px 0 24px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.field small{color:var(--ink-3);font-size:12.5px}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=url],select,textarea{width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--moss-2);box-shadow:0 0 0 3px rgba(92,107,60,.15)}
+textarea{min-height:90px;resize:vertical}
+.err{color:var(--danger);font-size:13.5px;min-height:18px;margin-top:4px}
+
+/* app */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(16px,3vw,32px);background:rgba(239,232,218,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .logo{font-family:var(--display);font-size:26px;color:var(--moss);line-height:1}
+.top .logo span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--clay);margin-left:8px;vertical-align:middle}
+.top nav{display:flex;gap:8px;align-items:center}
+.wrap{max-width:1180px;margin:0 auto;padding:28px clamp(16px,3vw,32px) 80px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.head h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,64px);line-height:1.05;text-transform:uppercase}
+.head p{color:var(--ink-3)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:9px 14px;border:1px solid var(--line);border-radius:99px}
+.tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:grid;grid-template-columns:72px 1fr auto auto;gap:16px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:10px 14px 10px 10px;transition:border-color .2s,box-shadow .2s}
+.row:hover{border-color:rgba(29,32,22,.28);box-shadow:0 10px 24px -18px rgba(61,74,42,.5)}
+.row.off{opacity:.55}
+.thumb{width:72px;height:72px;border-radius:12px;object-fit:cover;background:var(--bg-2)}
+.row h3{font-size:16px;font-weight:600;letter-spacing:-.02em}
+.row .meta{color:var(--ink-3);font-size:13px;margin-top:2px;display:flex;gap:10px;flex-wrap:wrap}
+.row .price{font-family:var(--display);font-size:22px;color:var(--moss);white-space:nowrap}
+.row .acts{display:flex;gap:6px;align-items:center}
+.pill{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--bg);border:1px solid var(--line)}
+.pill.hide{background:#f3dfd8;color:var(--danger);border-color:transparent}
+.empty{text-align:center;padding:60px 16px;color:var(--ink-3);background:var(--paper);border-radius:16px;border:1px dashed var(--line)}
+
+/* switch */
+.switch{position:relative;display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--ink-2)}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch i{width:38px;height:22px;border-radius:99px;background:#cfc8b6;position:relative;transition:background .25s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .25s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked+i{background:var(--moss-2)}
+.switch input:checked+i::after{transform:translateX(16px)}
+.switch input:focus-visible+i{box-shadow:0 0 0 3px rgba(92,107,60,.3)}
+
+/* editor */
+.sheet{position:fixed;inset:0;z-index:50;display:flex;justify-content:flex-end;visibility:hidden}
+.sheet.open{visibility:visible}
+.sheet .scrim{position:absolute;inset:0;background:rgba(29,32,22,.45);opacity:0;transition:opacity .35s}
+.sheet.open .scrim{opacity:1}
+.panel{position:relative;width:min(720px,100%);height:100%;background:var(--bg);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .45s var(--ease)}
+.sheet.open .panel{transform:none}
+.panel header{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--line);background:var(--paper)}
+.panel header h2{font-family:var(--display);font-weight:400;font-size:28px;text-transform:uppercase;line-height:1}
+.panel .body{flex:1;overflow:auto;padding:22px}
+.panel footer{display:flex;justify-content:space-between;gap:10px;padding:14px 22px;border-top:1px solid var(--line);background:var(--paper)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.sec{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+.sec h4{font-family:var(--mono);font-weight:500;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay);margin-bottom:12px}
+
+.drop{position:relative;border:2px dashed rgba(29,32,22,.22);border-radius:14px;background:#fff;min-height:220px;display:grid;place-items:center;text-align:center;cursor:pointer;overflow:hidden;transition:border-color .2s,background .2s}
+.drop:hover,.drop.over{border-color:var(--moss-2);background:#f7f9f0}
+.drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.drop .hint{padding:20px;color:var(--ink-3);position:relative}
+.drop .hint b{display:block;color:var(--ink);font-size:16px;margin:8px 0 2px}
+.drop .hint svg{width:34px;height:34px;color:var(--moss-2)}
+.drop .change{position:absolute;right:10px;bottom:10px;background:rgba(29,32,22,.75);color:#fff;border-radius:99px;padding:7px 12px;font-size:13px}
+.img-tools{display:flex;gap:8px;margin-top:10px;align-items:center}
+.img-tools input{flex:1}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px}
+.chips span{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border-radius:8px;padding:4px 6px 4px 10px;font-weight:600;font-size:13.5px}
+.chips span button{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;color:var(--ink-3)}
+.chips span button:hover{background:var(--bg-2);color:var(--ink)}
+.chips input{border:0!important;box-shadow:none!important;padding:5px!important;flex:1;min-width:120px}
+
+.spec-row{display:grid;grid-template-columns:1fr 1.6fr 34px;gap:8px;margin-bottom:8px}
+.shapes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.shape{border:1px solid var(--line);border-radius:12px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);background:#fff}
+.shape i{width:34px;height:42px;background:var(--sage);display:block}
+.shape[aria-pressed=true]{border-color:var(--moss);box-shadow:0 0 0 2px var(--moss) inset;color:var(--ink)}
+.shape.r1 i{border-radius:17px 17px 4px 4px}.shape.r2 i{border-radius:5px}.shape.r3 i{border-radius:4px 16px 4px 4px}.shape.r4 i{border-radius:50%;height:34px}
+
+.toast{position:fixed;left:50%;bottom:20px;z-index:100;transform:translate(-50%,150%);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:99px;font-size:14px;transition:transform .4s var(--ease);max-width:calc(100% - 32px);text-align:center;visibility:hidden}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+.toast.bad{background:var(--danger)}
+
+@media (max-width:720px){
+  .row{grid-template-columns:60px 1fr auto;grid-template-areas:"t i p" "a a a";row-gap:10px}
+  .row .thumb{width:60px;height:60px;grid-area:t}
+  .row .info{grid-area:i}.row .price{grid-area:p;font-size:19px}
+  .row .acts .vis{margin-right:auto!important}
+  .row .acts{grid-area:a;justify-content:flex-end;border-top:1px solid var(--line);padding-top:10px}
+  .grid2{grid-template-columns:1fr}
+  .top nav .btn span{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="demo hidden" id="demo-bar"><b>Chế độ demo</b> — chưa kết nối Supabase, mọi thay đổi chỉ lưu trong trình duyệt này. Xem HUONG-DAN.md để kết nối thật.</div>
+
+<!-- LOGIN -->
+<section class="login hidden" id="login">
+  <form class="login-card" id="login-form">
+    <div class="logo">RENTTREK</div>
+    <p>Đăng nhập để quản lý sản phẩm và hình ảnh.</p>
+    <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="pw">Mật khẩu</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <button class="btn" style="width:100%;margin-top:6px" id="login-btn">Đăng nhập</button>
+    <div class="err" id="login-err"></div>
+  </form>
+</section>
+
+<!-- APP -->
+<section class="hidden" id="app">
+  <div class="top">
+    <div class="logo">RENTTREK<span>ADMIN</span></div>
+    <nav>
+      <a class="btn ghost sm" href="index.html" target="_blank" rel="noopener">↗ <span>Xem trang web</span></a>
+      <button class="btn ghost sm" id="logout">Đăng xuất</button>
+    </nav>
+  </div>
+  <main class="wrap">
+    <div class="head">
+      <div><h1>Sản phẩm</h1><p id="count">Đang tải…</p></div>
+      <button class="btn" id="add">+ Thêm sản phẩm</button>
+    </div>
+    <div class="toolbar">
+      <div class="tabs" role="group" aria-label="Lọc">
+        <button class="tab" data-f="all" aria-pressed="true">Tất cả</button>
+        <button class="tab" data-f="trang-phuc" aria-pressed="false">Trang phục</button>
+        <button class="tab" data-f="phu-kien" aria-pressed="false">Phụ kiện</button>
+      </div>
+      <button class="btn ghost sm hidden" id="reset-demo">Khôi phục dữ liệu mẫu</button>
+    </div>
+    <div class="list" id="list"></div>
+  </main>
+</section>
+
+<!-- EDITOR -->
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <form class="panel" id="form" role="dialog" aria-modal="true" aria-labelledby="ed-title" novalidate>
+    <header><h2 id="ed-title">Thêm sản phẩm</h2><button type="button" class="icon-btn" data-close aria-label="Đóng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="body">
+      <div class="sec">
+        <h4>Ảnh sản phẩm</h4>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Chọn ảnh">
+          <img id="preview" class="hidden" alt="">
+          <div class="hint" id="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><b>Kéo thả ảnh vào đây</b>hoặc bấm để chọn ảnh từ máy / điện thoại</div>
+          <span class="change hidden" id="change">Đổi ảnh</span>
+        </div>
+        <input type="file" id="file" accept="image/*" class="hidden">
+        <div class="img-tools"><input type="url" id="img-url" placeholder="…hoặc dán link ảnh (https://…)"></div>
+        <small style="display:block;color:var(--ink-3);margin-top:8px">Ảnh được tự động nén còn tối đa 1600px trước khi tải lên.</small>
+      </div>
+
+      <div class="sec">
+        <h4>Thông tin</h4>
+        <div class="field"><label for="f-name">Tên sản phẩm *</label><input id="f-name" type="text" required placeholder="VD: Áo khoác gió chống nước"></div>
+        <div class="grid2">
+          <div class="field"><label for="f-cat">Danh mục *</label><select id="f-cat"><option value="trang-phuc">Trang phục</option><option value="phu-kien">Phụ kiện</option></select></div>
+          <div class="field"><label for="f-type">Loại *</label><input id="f-type" type="text" list="types" required placeholder="Áo, Quần, Giày…"><datalist id="types"><option>Áo</option><option>Quần</option><option>Giày</option><option>Mũ</option><option>Kính</option><option>Balo</option><option>Gậy</option></datalist></div>
+        </div>
+        <div class="field"><label for="f-sub">Mô tả ngắn</label><input id="f-sub" type="text" placeholder="Hiện ngay dưới tên trên thẻ sản phẩm"></div>
+        <div class="grid2">
+          <div class="field"><label for="f-price">Giá thuê (đ) *</label><input id="f-price" type="number" min="0" step="1000" required placeholder="70000"></div>
+          <div class="field"><label for="f-pmax">Giá đến (đ)</label><input id="f-pmax" type="number" min="0" step="1000" placeholder="Bỏ trống nếu 1 giá"><small>Điền nếu giá dao động, VD 70.000 – 160.000</small></div>
+        </div>
+        <div class="field"><label>Size có sẵn</label>
+          <div class="chips" id="chips"><input id="chip-in" type="text" placeholder="Gõ size rồi Enter (S, M, 40, Freesize…)"></div></div>
+        <div class="field"><label for="f-desc">Mô tả chi tiết</label><textarea id="f-desc" placeholder="Hiện trong cửa sổ chi tiết sản phẩm"></textarea></div>
+      </div>
+
+      <div class="sec">
+        <h4>Thông số</h4>
+        <div id="specs"></div>
+        <button type="button" class="btn ghost sm" id="add-spec">+ Thêm dòng</button>
+      </div>
+
+      <div class="sec">
+        <h4>Hiển thị trên web</h4>
+        <div class="field"><label>Kiểu khung ảnh</label>
+          <div class="shapes" id="shapes">
+            <button type="button" class="shape r1" data-v="r1"><i></i>Vòm</button>
+            <button type="button" class="shape r2" data-v="r2"><i></i>Bo góc</button>
+            <button type="button" class="shape r3" data-v="r3"><i></i>Góc lượn</button>
+            <button type="button" class="shape r4" data-v="r4"><i></i>Tròn</button>
+          </div></div>
+        <div class="grid2">
+          <div class="field"><label for="f-w">Độ rộng thẻ</label><select id="f-w">
+            <option value="w3">Nhỏ (1/4 hàng)</option><option value="w4">Vừa (1/3 hàng)</option><option value="w5">Lớn</option>
+            <option value="w6">Nửa hàng</option><option value="w7">Rất lớn</option><option value="w12">Cả hàng (ảnh ngang)</option></select></div>
+          <div class="field"><label>&nbsp;</label><label class="switch" style="height:44px"><input type="checkbox" id="f-vis" checked><i></i>Hiện trên trang web</label></div>
+        </div>
+      </div>
+      <div class="err" id="form-err"></div>
+    </div>
+    <footer>
+      <button type="button" class="btn danger" id="del">Xoá</button>
+      <div style="display:flex;gap:8px;margin-left:auto">
+        <button type="button" class="btn ghost" data-close>Huỷ</button>
+        <button type="submit" class="btn" id="save">Lưu sản phẩm</button>
+      </div>
+    </footer>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script>
+const S = window.RTStore;
+const $ = s => document.querySelector(s);
+const fmt = n => n.toLocaleString('vi-VN') + 'đ';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const CAT = { 'trang-phuc': 'Trang phục', 'phu-kien': 'Phụ kiện' };
+let items = [], filter = 'all', editing = null, pendingBlob = null, sizes = [], shape = 'r2';
+
+let tt;
+function toast(msg, bad) { const t = $('#toast'); t.textContent = msg; t.classList.toggle('bad', !!bad); t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2800); }
+
+// ---------- auth ----------
+async function boot() {
+  if (S.mode === 'demo') { $('#demo-bar').classList.remove('hidden'); $('#reset-demo').classList.remove('hidden'); }
+  try { await S.ready; } catch (e) { $('#login').classList.remove('hidden'); $('#login-err').textContent = 'Không kết nối được Supabase: ' + e.message; return; }
+  const u = await S.user();
+  u ? showApp() : showLogin();
+}
+function showLogin() {
+  $('#app').classList.add('hidden'); $('#login').classList.remove('hidden');
+  if (S.mode === 'demo') { $('#email').value = 'demo@renttrek.vn'; $('#pw').value = 'demo'; }
+}
+async function showApp() { $('#login').classList.add('hidden'); $('#app').classList.remove('hidden'); await reload(); }
+$('#login-form').addEventListener('submit', async e => {
+  e.preventDefault(); $('#login-err').textContent = ''; $('#login-btn').disabled = true;
+  try { await S.signIn($('#email').value.trim(), $('#pw').value); await showApp(); }
+  catch (err) { $('#login-err').textContent = /invalid/i.test(err.message) ? 'Sai email hoặc mật khẩu.' : err.message; }
+  finally { $('#login-btn').disabled = false; }
+});
+$('#logout').addEventListener('click', async () => { await S.signOut(); showLogin(); });
+
+// ---------- list ----------
+async function reload() {
+  try { items = await S.list({ all: true }); } catch (e) { toast('Lỗi tải dữ liệu: ' + e.message, true); items = []; }
+  render();
+}
+function render() {
+  const list = items.filter(p => filter === 'all' || p.cat === filter);
+  const hidden = items.filter(p => !p.visible).length;
+  $('#count').textContent = `${items.length} sản phẩm${hidden ? ` · ${hidden} đang ẩn` : ''}`;
+  if (!list.length) { $('#list').innerHTML = `<div class="empty">Chưa có sản phẩm nào. Bấm “+ Thêm sản phẩm” để đăng món đầu tiên.</div>`; return; }
+  $('#list').innerHTML = list.map(p => {
+    const i = items.indexOf(p);
+    return `<div class="row ${p.visible ? '' : 'off'}" data-id="${esc(p.id)}">
+      <img class="thumb" src="${esc(S.imgUrl(p.img, 200))}" alt="" onerror="this.style.visibility='hidden'">
+      <div class="info"><h3>${esc(p.name)}</h3>
+        <div class="meta"><span class="pill">${CAT[p.cat] || p.cat}</span><span>${esc(p.type)}</span><span>${p.sizes.map(esc).join(' · ')}</span>${p.visible ? '' : '<span class="pill hide">Đang ẩn</span>'}</div></div>
+      <div class="price">${p.priceMax ? `${p.price / 1000}–${p.priceMax / 1000}K` : fmt(p.price)}</div>
+      <div class="acts">
+        <label class="switch vis" title="Hiện trên web" style="margin-right:6px"><input type="checkbox" data-act="vis" ${p.visible ? 'checked' : ''}><i></i><span class="vis-l">${p.visible ? 'Hiện' : 'Ẩn'}</span></label>
+        <button class="icon-btn" data-act="up" title="Lên trên" ${i === 0 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+        <button class="icon-btn" data-act="down" title="Xuống dưới" ${i === items.length - 1 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button>
+        <button class="btn ghost sm" data-act="edit">Sửa</button>
+      </div></div>`;
+  }).join('');
+}
+$('#list').addEventListener('click', async e => {
+  const b = e.target.closest('[data-act]'); if (!b || b.dataset.act === 'vis') return;
+  const p = items.find(x => x.id === b.closest('.row').dataset.id);
+  if (b.dataset.act === 'edit') return openEditor(p);
+  const i = items.indexOf(p), j = b.dataset.act === 'up' ? i - 1 : i + 1;
+  const q = items[j]; if (!q) return;
+  [p.sort, q.sort] = [q.sort, p.sort];
+  if (p.sort === q.sort) p.sort += b.dataset.act === 'up' ? -1 : 1;
+  try { await Promise.all([S.save(p), S.save(q)]); } catch (err) { toast('Lỗi: ' + err.message, true); }
+  await reload();
+});
+$('#list').addEventListener('change', async e => {
+  if (e.target.dataset.act !== 'vis') return;
+  const p = items.find(x => x.id === e.target.closest('.row').dataset.id);
+  p.visible = e.target.checked;
+  try { await S.save(p); toast(p.visible ? 'Đã hiện trên web' : 'Đã ẩn khỏi web'); } catch (err) { toast('Lỗi: ' + err.message, true); }
+  render();
+});
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  filter = t.dataset.f; document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', x === t)); render();
+}));
+$('#reset-demo').addEventListener('click', async () => {
+  if (!confirm('Khôi phục 9 sản phẩm mẫu? Mọi thay đổi demo sẽ mất.')) return;
+  S.reset(); await reload(); toast('Đã khôi phục dữ liệu mẫu');
+});
+
+// ---------- editor ----------
+const sheet = $('#sheet');
+function openEditor(p) {
+  editing = p || null; pendingBlob = null;
+  $('#ed-title').textContent = p ? 'Sửa sản phẩm' : 'Thêm sản phẩm';
+  $('#del').classList.toggle('hidden', !p);
+  $('#form-err').textContent = '';
+  $('#f-name').value = p?.name || '';
+  $('#f-cat').value = p?.cat || (filter !== 'all' ? filter : 'trang-phuc');
+  $('#f-type').value = p?.type || '';
+  $('#f-sub').value = p?.sub || '';
+  $('#f-price').value = p?.price ?? '';
+  $('#f-pmax').value = p?.priceMax ?? '';
+  $('#f-desc').value = p?.desc || '';
+  $('#f-vis').checked = p ? p.visible : true;
+  const lay = (p?.layout || 'w4 r2').split(' ');
+  $('#f-w').value = lay.find(x => x[0] === 'w') || 'w4';
+  setShape(lay.find(x => x[0] === 'r') || 'r2');
+  sizes = [...(p?.sizes || [])]; renderChips();
+  $('#specs').innerHTML = ''; (p?.spec?.length ? p.spec : [['', '']]).forEach(([k, v]) => addSpec(k, v));
+  $('#img-url').value = p?.img && !p.img.startsWith('data:') ? p.img : '';
+  setPreview(p?.img ? S.imgUrl(p.img, 1000) : '');
+  sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
+  setTimeout(() => $('#f-name').focus(), 300);
+}
+function closeEditor() { sheet.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true'); }
+sheet.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closeEditor));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.classList.contains('open')) closeEditor(); });
+$('#add').addEventListener('click', () => openEditor(null));
+
+function setShape(v) { shape = v; document.querySelectorAll('.shape').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v)); }
+document.querySelectorAll('.shape').forEach(b => b.addEventListener('click', () => setShape(b.dataset.v)));
+
+// sizes
+function renderChips() {
+  const box = $('#chips'), inp = $('#chip-in');
+  box.querySelectorAll('span').forEach(s => s.remove());
+  sizes.forEach((s, i) => {
+    const el = document.createElement('span');
+    el.innerHTML = `${esc(s)}<button type="button" aria-label="Bỏ size ${esc(s)}">×</button>`;
+    el.querySelector('button').onclick = () => { sizes.splice(i, 1); renderChips(); };
+    box.insertBefore(el, inp);
+  });
+}
+function commitChip() {
+  const v = $('#chip-in').value.split(',').map(x => x.trim()).filter(Boolean);
+  v.forEach(x => { if (!sizes.includes(x)) sizes.push(x); });
+  $('#chip-in').value = ''; renderChips();
+}
+$('#chip-in').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); commitChip(); }
+  else if (e.key === 'Backspace' && !e.target.value && sizes.length) { sizes.pop(); renderChips(); }
+});
+$('#chip-in').addEventListener('blur', commitChip);
+$('#chips').addEventListener('click', e => { if (e.target.id === 'chips') $('#chip-in').focus(); });
+
+// specs
+function addSpec(k = '', v = '') {
+  const r = document.createElement('div'); r.className = 'spec-row';
+  r.innerHTML = `<input type="text" placeholder="Tên (VD: Chất liệu)" value="${esc(k)}"><input type="text" placeholder="Giá trị" value="${esc(v)}">
+    <button type="button" class="icon-btn" aria-label="Xoá dòng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
+  r.querySelector('button').onclick = () => r.remove();
+  $('#specs').appendChild(r);
+}
+$('#add-spec').addEventListener('click', () => addSpec());
+
+// image: chọn / kéo thả / dán, tự nén
+function setPreview(src) {
+  const has = !!src;
+  $('#preview').src = src || ''; $('#preview').classList.toggle('hidden', !has);
+  $('#hint').classList.toggle('hidden', has); $('#change').classList.toggle('hidden', !has);
+}
+async function compress(file, max = 1600, q = .85) {
+  const bmp = await createImageBitmap(file);
+  const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return await new Promise(r => c.toBlob(r, 'image/jpeg', q));
+}
+async function takeFile(f) {
+  if (!f || !f.type.startsWith('image/')) return toast('Hãy chọn file ảnh', true);
+  try {
+    pendingBlob = await compress(f);
+    setPreview(URL.createObjectURL(pendingBlob)); $('#img-url').value = '';
+    toast(`Đã chọn ảnh (${Math.round(pendingBlob.size / 1024)} KB)`);
+  } catch (e) { toast('Không đọc được ảnh này', true); }
+}
+const drop = $('#drop');
+drop.addEventListener('click', () => $('#file').click());
+drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#file').click(); } });
+$('#file').addEventListener('change', e => { takeFile(e.target.files[0]); e.target.value = ''; });
+['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => takeFile(e.dataTransfer.files[0]));
+document.addEventListener('paste', e => { if (!sheet.classList.contains('open')) return; const f = [...e.clipboardData.files][0]; if (f) takeFile(f); });
+$('#img-url').addEventListener('change', e => { const v = e.target.value.trim(); if (v) { pendingBlob = null; setPreview(v); } });
+
+const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
+
+$('#form').addEventListener('submit', async e => {
+  e.preventDefault(); commitChip();
+  const err = m => { $('#form-err').textContent = m; };
+  const name = $('#f-name').value.trim(), type = $('#f-type').value.trim(), price = parseInt($('#f-price').value, 10);
+  const pmax = parseInt($('#f-pmax').value, 10);
+  if (!name) return err('Vui lòng nhập tên sản phẩm.');
+  if (!type) return err('Vui lòng nhập loại (Áo, Quần, Giày…).');
+  if (!(price >= 0)) return err('Vui lòng nhập giá thuê.');
+  if (pmax && pmax <= price) return err('“Giá đến” phải lớn hơn giá thuê.');
+  if (!pendingBlob && !$('#img-url').value.trim() && !editing?.img) return err('Vui lòng thêm ảnh sản phẩm.');
+  if (!sizes.length) sizes = ['Freesize'];
+  $('#save').disabled = true; $('#save').textContent = pendingBlob ? 'Đang tải ảnh…' : 'Đang lưu…';
+  try {
+    let img = $('#img-url').value.trim() || editing?.img || '';
+    if (pendingBlob) img = await S.upload(pendingBlob, (slug(name) || 'anh') + '.jpg');
+    const p = {
+      id: editing?.id || `${slug(name) || 'sp'}-${Math.random().toString(36).slice(2, 6)}`,
+      cat: $('#f-cat').value, type, name, sub: $('#f-sub').value.trim(), price, priceMax: pmax || null,
+      img, sizes, layout: `${$('#f-w').value} ${shape}`, desc: $('#f-desc').value.trim(),
+      spec: [...document.querySelectorAll('.spec-row')].map(r => [...r.querySelectorAll('input')].map(i => i.value.trim())).filter(([k, v]) => k || v),
+      sort: editing?.sort ?? (Math.max(0, ...items.map(x => x.sort)) + 10),
+      visible: $('#f-vis').checked,
+    };
+    await S.save(p);
+    closeEditor(); toast(editing ? 'Đã cập nhật sản phẩm' : 'Đã thêm sản phẩm'); await reload();
+  } catch (ex) { err('Lưu không thành công: ' + ex.message); }
+  finally { $('#save').disabled = false; $('#save').textContent = 'Lưu sản phẩm'; }
+});
+$('#del').addEventListener('click', async () => {
+  if (!editing || !confirm(`Xoá “${editing.name}”? Không hoàn tác được.`)) return;
+  try { await S.remove(editing.id); closeEditor(); toast('Đã xoá sản phẩm'); await reload(); }
+  catch (ex) { $('#form-err').textContent = 'Xoá không thành công: ' + ex.message; }
+});
+
+boot();
+</script>
+</body>
+</html>

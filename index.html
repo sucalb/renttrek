@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RentTrek — Thuê đồ trekking</title>
+<meta name="description" content="RentTrek – thuê trọn bộ đồ trekking: áo, quần, giày, mũ, kính, balo, gậy. Thuê online, ship 2 chiều, thêm ngày chỉ +20k.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="cursor" aria-hidden="true"><div class="sole"><svg viewBox="0 0 24 38" fill="currentColor"><path d="M13.2 1c4.9 0 7.6 4.5 7.6 10.6 0 4.6-1.5 7.6-2.5 10.4H7.6C5.2 19.6 3.2 16.4 3.2 11.6 3.2 5.4 7.4 1 13.2 1z"/><path d="M7.6 24.6h8.8c.9 0 1.5.7 1.5 1.6v3.9c0 4.1-2.7 7-5.9 7s-5.9-2.9-5.9-7v-3.9c0-.9.6-1.6 1.5-1.6z"/><g stroke="#F7F2E8" stroke-width="1.3" stroke-linecap="round" opacity=".55"><path d="M8 7.5h3M13 7.5h3M7 11.5h3.5M13.5 11.5H17M7.6 15.5h3M13.4 15.5h3M8.6 28.5h6.8M8.8 32h6.4"/></g></svg></div><span></span></div>
+
+<nav class="nav" aria-label="Chính">
+  <a href="#top" class="logo">RENTTREK</a>
+  <ul>
+    <li><a href="#trang-phuc">Trang phục</a></li>
+    <li><a href="#phu-kien">Phụ kiện</a></li>
+    <li><a href="san-pham.html">Tất cả đồ</a></li>
+    <li><a href="#bang-gia">Bảng giá</a></li>
+    <li><a href="#thue-online">Thuê online</a></li>
+    <li><a href="#lien-he">Liên hệ</a></li>
+  </ul>
+  <button class="bag-btn" data-open-bag>Túi thuê <b data-count>0</b></button>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="cloud-filters"></defs></svg>
+  <div class="scene" id="scene" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="sun" data-depth="0"></div>
+    <div class="clouds" data-depth=".05" id="clouds-back"></div>
+    <div class="birds" id="birds"></div>
+    <div id="ridges"></div>
+  </div>
+  <div class="hero-ui">
+    <div class="hero-meta mono fade">
+      <span>( Thuê đồ trekking )</span>
+      <span>Thuê online · Ship 2 chiều</span>
+      <span>Mùa đi núi 2026</span>
+    </div>
+    <div class="hero-foot fade" style="transition-delay:1.6s">
+      <p>Không cần mua cả tủ đồ cho một chuyến đi. Thuê áo, quần, giày, balo, gậy… trả lại khi xuống núi. Nhẹ ví, nhẹ vai.</p>
+      <div><a href="#bo-suu-tap" class="cta" data-hover>Xem đồ cho thuê
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+      <div class="scroll-ind mono"><i></i>Cuộn</div>
+    </div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Áo</span><span>Quần</span><span>Giày</span><span>Mũ</span><span>Kính</span><span>Balo</span><span>Gậy</span>
+    <span>Áo</span><span>Quần</span><span>Giày</span><span>Mũ</span><span>Kính</span><span>Balo</span><span>Gậy</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="mono fade" style="color:var(--ink-3)">( 01 — Về RentTrek )</div>
+  <div>
+    <p class="big reveal">
+      <span class="line"><span>Đồ tốt cho mỗi cung đường,</span></span>
+      <span class="line"><span><span class="serif">mà không phải</span> mua mới.</span></span>
+      <span class="line"><span>Chọn món — <span class="hl">thuê</span> — lên đường.</span></span>
+    </p>
+  </div>
+  <div class="stats">
+    <div class="stat fade"><strong>07</strong><span>hạng mục đồ trekking</span></div>
+    <div class="stat fade"><strong>30K</strong><span>giá thuê chỉ từ</span></div>
+    <div class="stat fade"><strong>+20K</strong><span>mỗi ngày thuê thêm</span></div>
+    <div class="stat fade"><strong>22H</strong><span>hạn trả đồ, hoàn cọc ngay</span></div>
+  </div>
+</section>
+
+<!-- COLLECTION -->
+<section class="collection" id="bo-suu-tap">
+  <div class="sec-head">
+    <h2 class="reveal"><span class="line"><span>Bộ sưu tập<sup id="total-count"></sup></span></span></h2>
+    <div class="side fade">
+      <p>Ấn vào từng món để xem chi tiết, chọn size và tính tiền thuê theo số ngày.</p>
+      <div class="tabs" role="group" aria-label="Lọc">
+        <button class="tab" data-filter="all" aria-pressed="true">Tất cả</button>
+        <button class="tab" data-filter="trang-phuc" aria-pressed="false">Trang phục</button>
+        <button class="tab" data-filter="phu-kien" aria-pressed="false">Phụ kiện</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat-block" data-cat="trang-phuc" id="trang-phuc">
+    <div class="cat-title"><h3>Trang phục</h3><span class="serif">áo, quần, giày</span><span class="mono" data-cat-count="trang-phuc" data-prefix="A"></span></div>
+    <div class="type-row" data-types></div>
+    <div class="grid" data-grid="trang-phuc"></div>
+    <div class="more-row"><button class="more-btn" data-more data-hover><span>Xem thêm</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button><a class="all-link" data-all href="san-pham.html" data-hover>Xem tất cả trang phục →</a></div>
+  </div>
+  <div class="cat-block" data-cat="phu-kien" id="phu-kien">
+    <div class="cat-title"><h3>Phụ kiện</h3><span class="serif">mũ, kính, balo, gậy</span><span class="mono" data-cat-count="phu-kien" data-prefix="B"></span></div>
+    <div class="type-row" data-types></div>
+    <div class="grid" data-grid="phu-kien"></div>
+    <div class="more-row"><button class="more-btn" data-more data-hover><span>Xem thêm</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button><a class="all-link" data-all href="san-pham.html" data-hover>Xem tất cả phụ kiện →</a></div>
+  </div>
+</section>
+
+<!-- PRICE LIST -->
+<section class="prices" id="bang-gia">
+  <div class="sec-head">
+    <h2 class="reveal"><span class="line"><span>Bảng giá</span></span></h2>
+    <p class="side fade">Giá thuê cho mỗi món. Cần thêm ngày? Chỉ <b>+20.000đ / ngày</b>. Bấm vào từng loại để xem tất cả mẫu.</p>
+  </div>
+  <ol class="plist" id="plist"></ol>
+  <div class="pnote mono"><span>Đơn vị: VNĐ</span><span>Thuê thêm ngày +20K</span></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="thue-online">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="sec-head">
+    <h2 class="reveal"><span class="line"><span>Thuê online</span></span></h2>
+    <p class="side fade">Nhắn shop, chốt đồ, nhận hàng tận nơi. Đi về trả đồ — kiểm tra xong hoàn cọc liền.</p>
+  </div>
+  <div class="steps">
+    <div class="step fade"><div class="k">01</div><h4>Đặt cọc</h4><p>Cọc bằng CCCD hoặc tiền mặt — linh hoạt theo bạn.</p></div>
+    <div class="step fade"><div class="k">02</div><h4>Ship 2 chiều</h4><p>Shop giao tận nơi, khách hàng chịu phí ship 2 chiều.</p></div>
+    <div class="step fade"><div class="k">03</div><h4>Thêm ngày</h4><p>Đi lâu hơn dự kiến? Thuê thêm mỗi ngày chỉ +20.000đ.</p></div>
+    <div class="step fade"><div class="k">04</div><h4>Trả & hoàn cọc</h4><p>Trả đồ trước 22h, shop kiểm tra đồ rồi hoàn cọc.</p></div>
+  </div>
+  <div class="note-card fade">
+    <h3>Lưu ý</h3>
+    <ul>
+      <li><b>01</b>Vui lòng giữ gìn đồ dùng trong suốt chuyến đi.</li>
+      <li><b>02</b>Không tự ý giặt đồ — shop sẽ vệ sinh chuyên dụng.</li>
+      <li><b>03</b>Shop sẽ phụ thu tùy mức độ hư hỏng.</li>
+    </ul>
+    <a class="cta" href="tel:0798138804" data-hover>Gọi shop</a>
+  </div>
+</section>
+
+<!-- STRIP -->
+<section class="strip">
+  <figure class="fade"><div class="a" style="overflow:hidden"><img src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=900&q=70" alt="Người leo núi đeo balo vàng"></div><figcaption class="mono">( Đường mòn )</figcaption></figure>
+  <figure class="fade"><div class="b" style="overflow:hidden"><img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=700&q=70" alt="Lều cắm trại nhìn ra rừng"></div><figcaption class="mono">( Cắm trại )</figcaption></figure>
+  <figure class="fade"><div class="c" style="overflow:hidden"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=70" alt="Dãy núi phủ tuyết"></div><figcaption class="mono">( Đỉnh núi )</figcaption></figure>
+  <p class="quote reveal"><span class="line"><span>Núi không đợi ai —</span></span><span class="line"><span><span class="serif">nhưng đồ thì</span> RentTrek lo.</span></span></p>
+</section>
+
+<!-- ROUTES -->
+<section class="routes" data-io>
+  <div class="orbit" aria-hidden="true">
+    <span class="chip" style="--x:8%;--y:18%;--d:0">Fansipan</span>
+    <span class="bubble" style="--x:24%;--y:9%;--d:1;--s:72px"><img loading="lazy" src="https://images.unsplash.com/photo-1622260614153-03223fb72052?auto=format&fit=crop&w=200&q=70" alt=""></span>
+    <span class="chip dark" style="--x:70%;--y:12%;--d:2">Tà Xùa</span>
+    <span class="bubble hide-sm" style="--x:86%;--y:26%;--d:3;--s:58px"><img loading="lazy" src="https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=200&q=70" alt=""></span>
+    <span class="chip hide-sm" style="--x:4%;--y:58%;--d:4">Lảo Thẩn</span>
+    <span class="bubble" style="--x:12%;--y:76%;--d:5;--s:64px"><img loading="lazy" src="https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=200&q=70" alt=""></span>
+    <span class="chip" style="--x:72%;--y:80%;--d:6">Lang Biang</span>
+    <span class="chip dark hide-sm" style="--x:80%;--y:58%;--d:7">Tà Năng – Phan Dũng</span>
+    <span class="bubble hide-sm" style="--x:58%;--y:88%;--d:8;--s:52px"><img loading="lazy" src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=200&q=70" alt=""></span>
+    <span class="chip hide-sm" style="--x:30%;--y:88%;--d:9">Bạch Mộc Lương Tử</span>
+  </div>
+  <span class="mono fade">( Cung đường )</span>
+  <h2 class="reveal">Đi đâu cũng <span class="serif">đủ đồ</span></h2>
+  <p class="fade">Trek trong ngày hay hành trình nhiều ngày — chọn đồ theo cung đường, RentTrek chuẩn bị sẵn cho bạn.</p>
+  <a href="#bo-suu-tap" class="cta fade" data-hover>Chọn đồ ngay</a>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="lien-he">
+  <span class="mono fade">( Liên hệ đặt thuê )</span>
+  <h2 class="reveal"><span class="line"><span>Sẵn sàng</span></span><span class="line"><span><span class="serif">lên</span> núi?</span></span></h2>
+  <div class="row fade">
+    <a class="cta" href="https://www.instagram.com/renttrek.store" target="_blank" rel="noopener" data-hover>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      @renttrek.store</a>
+    <a class="cta ghost" href="https://zalo.me/0798138804" target="_blank" rel="noopener" data-hover>Nhắn Zalo</a>
+  </div>
+  <a class="phone fade" href="tel:0798138804" data-hover>0798 138 804</a>
+</section>
+
+<footer>
+  <div class="foot-top">
+    <div><div class="logo" style="margin-bottom:14px">RENTTREK</div><p>Cho thuê đồ trekking — trang phục và phụ kiện cho mọi cung đường.</p></div>
+    <div><h5>Đồ thuê</h5><a href="san-pham.html?dm=trang-phuc">Trang phục</a><a href="san-pham.html?dm=phu-kien">Phụ kiện</a><a href="san-pham.html">Tất cả sản phẩm</a><a href="#bang-gia">Bảng giá</a></div>
+    <div><h5>Thuê online</h5><a href="#thue-online">Quy trình</a><a href="#thue-online">Lưu ý</a></div>
+    <div><h5>Liên hệ</h5><a href="tel:0798138804">0798 138 804</a><a href="https://www.instagram.com/renttrek.store" target="_blank" rel="noopener">Instagram</a><a href="https://zalo.me/0798138804" target="_blank" rel="noopener">Zalo</a></div>
+  </div>
+  <div class="foot-bot mono"><span>© 2026 RentTrek</span><span>Thuê đồ — lên núi — trả đồ</span></div>
+  <div class="foot-giant" aria-hidden="true">RENTTREK</div>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <button class="x" data-close aria-label="Đóng"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="ph"><img id="m-img" alt=""></div>
+    <div class="body">
+      <div class="mono" id="m-cat" style="color:var(--clay)"></div>
+      <h3 id="m-title"></h3>
+      <p class="desc" id="m-desc"></p>
+      <div class="big-p" id="m-price"></div>
+      <ul class="spec" id="m-spec"></ul>
+      <div><div class="opt-label">Chọn size</div><div class="size-pick" id="m-sizes"></div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <div><div class="opt-label">Thuê thêm ngày (+20K/ngày)</div>
+          <div class="stepper"><button data-step="-1" aria-label="Bớt">−</button><output id="m-days">0</output><button data-step="1" aria-label="Thêm">+</button></div></div>
+      </div>
+      <div class="est"><span>Tạm tính</span><b id="m-est"></b></div>
+      <button class="cta" id="m-add" style="justify-content:center" data-hover>Thêm vào túi thuê</button>
+    </div>
+  </div>
+</div>
+
+<!-- BAG -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="scrim" data-close-bag></div>
+  <aside class="panel" role="dialog" aria-modal="true" aria-label="Túi thuê">
+    <header><h3>Túi thuê</h3><button class="x" data-close-bag aria-label="Đóng" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+    <div class="items" id="bag-items"></div>
+    <footer>
+      <div class="total"><span>Tạm tính</span><b id="bag-total">0đ</b></div>
+      <p class="fine">Chưa gồm phí ship 2 chiều và tiền cọc (CCCD hoặc tiền mặt).</p>
+      <button class="cta" id="bag-send">Copy đơn & nhắn Instagram</button>
+      <a class="cta ghost" id="bag-zalo" href="https://zalo.me/0798138804" target="_blank" rel="noopener" style="justify-content:center">Copy đơn & nhắn Zalo</a>
+    </footer>
+  </aside>
+</div>
+
+<button class="fab" data-open-bag>Túi thuê <b data-count>0</b></button>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script>
+// ---------- hero: núi trùng điệp + mây + sương ----------
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const scene = document.getElementById('scene'), host = document.getElementById('ridges');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // random cố định để dáng núi giống nhau mỗi lần tải
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const W = 1600, H = 900;
+  function ridge(base, amp, rough, peaks) {
+    const n = 257, ys = new Array(n);
+    // vài đỉnh lớn rồi chia nhỏ (midpoint displacement)
+    const step0 = (n - 1) / peaks;
+    for (let k = 0; k <= peaks; k++) ys[Math.round(k * step0)] = base - rnd() * amp;
+    let a = amp * .55;
+    for (let step = step0; step > 1; step /= 2) {
+      for (let i = 0; i + step < n; i += step) {
+        const L = Math.round(i), Rr = Math.round(i + step), m = Math.round(i + step / 2);
+        if (ys[m] === undefined) ys[m] = (ys[L] + ys[Rr]) / 2 + (rnd() - .5) * a;
+      }
+      a *= rough;
+    }
+    for (let i = 0; i < n; i++) if (ys[i] === undefined) ys[i] = ys[i - 1];
+    let d = `M0 ${H} L0 ${ys[0].toFixed(1)}`;
+    ys.forEach((y, i) => d += ` L${(i / (n - 1) * W).toFixed(1)} ${y.toFixed(1)}`);
+    return d + ` L${W} ${H} Z`;
+  }
+  // xa -> gần: màu nhạt dần sang xanh rêu đậm, chân núi chìm trong sương
+  const LAYERS = [
+    { base: 560, amp: 440, rough: .58, peaks: 4, top: '#B7BBA2', bot: '#E3D9C0', depth: .06, snow: true },
+    { base: 610, amp: 330, rough: .56, peaks: 5, top: '#9AA27F', bot: '#D6CDB0', depth: .14, fog: true },
+    { base: 660, amp: 230, rough: .54, peaks: 6, top: '#7E8A61', bot: '#C2BD9C', depth: .26, title: true },
+    { base: 720, amp: 150, rough: .52, peaks: 5, top: '#5F6D43', bot: '#8E9474', depth: .42, fog: true },
+    { base: 790, amp: 100, rough: .5,  peaks: 7, top: '#4B5932', bot: '#56623C', depth: .62 },
+    { base: 830, amp: 55,  rough: .5,  peaks: 9, top: '#3D4A2A', bot: '#3D4A2A', depth: .85 },
+  ];
+  const layers = [];
+  LAYERS.forEach((L, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'ridge rise';
+    wrap.style.setProperty('--rd', (i * .12) + 's');
+    wrap.style.setProperty('--ry', (4 + i * 4) + '%');
+    wrap.style.zIndex = 10 + i * 2;
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('preserveAspectRatio', 'xMidYMax slice');
+    const gid = 'rg' + i;
+    svg.innerHTML = `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="${(L.base - L.amp) / H}" stop-color="${L.top}"/><stop offset="${Math.min(1, (L.base + 60) / H)}" stop-color="${L.bot}"/></linearGradient>
+        ${L.snow ? `<linearGradient id="sn${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="${(L.base - L.amp) / H}" stop-color="#F6F1E6"/><stop offset="${(L.base - L.amp * .62) / H}" stop-color="#F6F1E6" stop-opacity="0"/></linearGradient>` : ''}</defs>
+      <path d="${ridge(L.base, L.amp, L.rough, L.peaks)}" fill="url(#${gid})"/>
+      ${L.snow ? `<path d="${(seed = 7, ridge(L.base, L.amp, L.rough, L.peaks))}" fill="url(#sn${i})" opacity=".9"/>` : ''}`;
+    if (L.snow) seed = 7, ridge(L.base, L.amp, L.rough, L.peaks); // giữ chuỗi random
+    wrap.appendChild(svg);
+    host.appendChild(wrap);
+    layers.push({ el: wrap, d: L.depth });
+    if (L.fog) {
+      const f = document.createElement('div');
+      f.className = 'fog';
+      f.style.cssText = `bottom:${(1 - (L.base + 40) / H) * 100}%;height:${16 + i * 2}%;z-index:${11 + i * 2};--fd:${70 + i * 18}s;opacity:${.8 - i * .08}`;
+      host.appendChild(f);
+      layers.push({ el: f, d: L.depth, fog: true });
+    }
+    if (L.title) {
+      const t = document.createElement('div');
+      t.className = 'hero-title';
+      t.style.zIndex = 11 + i * 2;
+      t.innerHTML = `<span class="kicker reveal" style="--base:600ms">đủ bộ, đúng size, sẵn sàng lên núi</span><h1 class="reveal" style="--base:900ms">RentTrek</h1>`;
+      host.appendChild(t);
+      layers.push({ el: t, d: .3, title: true });
+    }
+  });
+
+  // mây thật bằng feTurbulence: 3 lớp (sáng / bóng giữa / bóng đáy)
+  const defs = document.getElementById('cloud-filters');
+  const mk = (id, freq, oct, sd, scale) => `<filter id="${id}" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="${oct}" seed="${sd}"/><feDisplacementMap in="SourceGraphic" scale="${scale}"/></filter>`;
+  let fx = '';
+  [3, 11, 23, 41].forEach((sd, k) => {
+    fx += mk(`cb${k}`, .012, 4, sd, 170) + mk(`cm${k}`, .012, 2, sd, 150) + mk(`cf${k}`, .012, 2, sd, 100);
+  });
+  defs.innerHTML = fx;
+  const CLOUDS = [
+    { y: '6%',  s: .9,  dur: 150, dl: -40, k: 0, z: 9 },
+    { y: '16%', s: .55, dur: 190, dl: -120, k: 1, z: 9 },
+    { y: '2%',  s: 1.25, dur: 120, dl: -85, k: 2, z: 9 },
+    { y: '24%', s: .7,  dur: 170, dl: -10, k: 3, z: 13 },
+    { y: '33%', s: .45, dur: 210, dl: -150, k: 1, z: 15 },
+  ];
+  const back = document.getElementById('clouds-back');
+  CLOUDS.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'cloud';
+    el.style.cssText = `--cy:${c.y};--dur:${c.dur}s;--dl:${c.dl}s;z-index:${c.z}`;
+    el.innerHTML = `<div class="c" style="--cs:${c.s}">
+      <i style="filter:url(#cb${c.k});box-shadow:300px 300px 30px -20px #FFFBF2"></i>
+      <i style="filter:url(#cm${c.k});box-shadow:300px 340px 70px -60px rgba(176,166,140,.55);left:-345px"></i>
+      <i style="filter:url(#cf${c.k});box-shadow:300px 370px 60px -100px rgba(70,66,48,.35);left:-345px"></i></div>`;
+    if (c.z > 10) { el.style.position = 'absolute'; host.appendChild(el); layers.push({ el, d: .2, cloud: true }); }
+    else back.appendChild(el);
+  });
+
+  // chim bay xa
+  const birds = document.getElementById('birds');
+  [[0, 46, -6], [1, 52, -20], [2, 58, -31], [4, 49, -12]].forEach(([y, fd, dl]) => {
+    birds.insertAdjacentHTML('beforeend', `<svg viewBox="0 0 24 10" style="top:${y * 14}px;--fd:${fd}s;--dl:${dl}s"><path d="M1 8 Q6 1 12 7 Q18 1 23 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`);
+  });
+
+  // cuộn: zoom tiến vào núi, lớp gần to nhanh hơn; chuột: lệch nhẹ theo chiều sâu
+  let mx = 0, tmx = 0;
+  addEventListener('mousemove', e => { tmx = e.clientX / innerWidth - .5; });
+  const backClouds = document.getElementById('clouds-back'), sun = scene.querySelector('.sun');
+  function frame() {
+    const p = Math.min(1, Math.max(0, scrollY / innerHeight));
+    mx += (tmx - mx) * .05;
+    layers.forEach(L => {
+      const z = 1 + p * L.d * 1.1;
+      const y = p * (L.title ? 260 : (1 - L.d) * 140);
+      const x = -mx * L.d * 60;
+      L.el.style.transform = `translate3d(${x}px,${y}px,0) scale(${z})`;
+      if (L.title) L.el.style.opacity = 1 - p * 1.6;
+    });
+    backClouds.style.transform = `translate3d(0,${p * 120}px,0) scale(${1 + p * .15})`;
+    sun.style.translate = `${-mx * 10}px ${p * 160}px`;
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+</script>
+<script src="shop.js"></script>
+</body>
+</html>
