@@ -16,7 +16,9 @@ const catUrl = q => 'san-pham.html?' + new URLSearchParams(q).toString();
 const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
 // ---------- thẻ sản phẩm (dùng cho cả trang chủ và trang danh mục) ----------
-function makeCard(p, i, { uniform = false, delay = 0 } = {}) {
+// home: trang chủ dùng "ảnh trang chủ" nếu có; trang danh mục và popup luôn dùng ảnh sản phẩm thật
+function makeCard(p, i, { uniform = false, delay = 0, home = false } = {}) {
+  const src = home && p.homeImg ? p.homeImg : p.img;
   const wide = !uniform && /\bw12\b/.test(p.layout);
   const shape = (p.layout.match(/\br[1-4]\b/) || ['r2'])[0];
   const el = document.createElement('button');
@@ -27,7 +29,7 @@ function makeCard(p, i, { uniform = false, delay = 0 } = {}) {
   if (wide) el.style.gridColumn = '1/-1';
   el.innerHTML = `
     <div class="ph"${wide ? ' style="aspect-ratio:21/8"' : ''}>
-      <img loading="lazy" src="${esc(IMG(p.img, wide ? 1800 : 900))}" alt="${esc(p.name)}">
+      <img loading="lazy" src="${esc(IMG(src, wide ? 1800 : 900))}" alt="${esc(p.name)}">
       <span class="price-tag">Xem chi tiết →</span>
     </div>
     <div class="info">
@@ -70,7 +72,7 @@ function renderCards(list) {
     if (all) all.href = catUrl({ dm: cat });
     const step = () => {
       const next = items.slice(shown, shown + HOME_STEP);
-      next.forEach((p, k) => grid.appendChild(makeCard(p, list.indexOf(p), { delay: (k % 3) * 0.08 })));
+      next.forEach((p, k) => grid.appendChild(makeCard(p, list.indexOf(p), { delay: (k % 3) * 0.08, home: true })));
       shown += next.length;
       const left = items.length - shown;
       if (more) { more.hidden = left <= 0; more.querySelector('span').textContent = `Xem thêm ${CAT_NAME[cat].toLowerCase()} (${left})`; }

@@ -194,6 +194,7 @@ textarea{min-height:90px;resize:vertical}
     <div class="body">
       <div class="sec">
         <h4>Ảnh sản phẩm</h4>
+        <small style="display:block;color:var(--ink-3);margin:-4px 0 10px">Ảnh thật của món đồ — hiện ở trang danh mục, chi tiết sản phẩm và túi thuê.</small>
         <div class="drop" id="drop" tabindex="0" role="button" aria-label="Chọn ảnh">
           <img id="preview" class="hidden" alt="">
           <div class="hint" id="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><b>Kéo thả ảnh vào đây</b>hoặc bấm để chọn ảnh từ máy / điện thoại</div>
@@ -202,6 +203,18 @@ textarea{min-height:90px;resize:vertical}
         <input type="file" id="file" accept="image/*" class="hidden">
         <div class="img-tools"><input type="url" id="img-url" placeholder="…hoặc dán link ảnh (https://…)"></div>
         <small style="display:block;color:var(--ink-3);margin-top:8px">Ảnh được tự động nén còn tối đa 1600px trước khi tải lên.</small>
+      </div>
+
+      <div class="sec">
+        <h4>Ảnh trang chủ <span style="text-transform:none;letter-spacing:0;color:var(--ink-3)">(không bắt buộc)</span></h4>
+        <small style="display:block;color:var(--ink-3);margin:-4px 0 10px">Ảnh đẹp / ảnh phong cách chỉ hiện ở trang chủ. Bỏ trống thì trang chủ dùng ảnh sản phẩm ở trên.</small>
+        <div class="drop" id="drop-home" tabindex="0" role="button" aria-label="Chọn ảnh trang chủ">
+          <img id="preview-home" class="hidden" alt="">
+          <div class="hint" id="hint-home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><b>Thêm ảnh cho trang chủ</b>kéo thả hoặc bấm để chọn</div>
+          <span class="change hidden" id="change-home">Đổi ảnh</span>
+        </div>
+        <input type="file" id="file-home" accept="image/*" class="hidden">
+        <div class="img-tools"><input type="url" id="img-url-home" placeholder="…hoặc dán link ảnh (https://…)"><button type="button" class="btn ghost sm hidden" id="clear-home">Bỏ ảnh</button></div>
       </div>
 
       <div class="sec">
@@ -265,7 +278,7 @@ const $ = s => document.querySelector(s);
 const fmt = n => n.toLocaleString('vi-VN') + 'đ';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const CAT = { 'trang-phuc': 'Trang phục', 'phu-kien': 'Phụ kiện' };
-let items = [], filter = 'all', editing = null, pendingBlob = null, sizes = [], shape = 'r2';
+let items = [], filter = 'all', editing = null, sizes = [], shape = 'r2';
 
 let tt;
 function toast(msg, bad) { const t = $('#toast'); t.textContent = msg; t.classList.toggle('bad', !!bad); t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2800); }
@@ -344,7 +357,7 @@ $('#reset-demo').addEventListener('click', async () => {
 // ---------- editor ----------
 const sheet = $('#sheet');
 function openEditor(p) {
-  editing = p || null; pendingBlob = null;
+  editing = p || null;
   $('#ed-title').textContent = p ? 'Sửa sản phẩm' : 'Thêm sản phẩm';
   $('#del').classList.toggle('hidden', !p);
   $('#form-err').textContent = '';
@@ -361,8 +374,7 @@ function openEditor(p) {
   setShape(lay.find(x => x[0] === 'r') || 'r2');
   sizes = [...(p?.sizes || [])]; renderChips();
   $('#specs').innerHTML = ''; (p?.spec?.length ? p.spec : [['', '']]).forEach(([k, v]) => addSpec(k, v));
-  $('#img-url').value = p?.img && !p.img.startsWith('data:') ? p.img : '';
-  setPreview(p?.img ? S.imgUrl(p.img, 1000) : '');
+  pic.load(p?.img); picHome.load(p?.homeImg);
   sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
   setTimeout(() => $('#f-name').focus(), 300);
 }
@@ -407,12 +419,7 @@ function addSpec(k = '', v = '') {
 }
 $('#add-spec').addEventListener('click', () => addSpec());
 
-// image: chọn / kéo thả / dán, tự nén
-function setPreview(src) {
-  const has = !!src;
-  $('#preview').src = src || ''; $('#preview').classList.toggle('hidden', !has);
-  $('#hint').classList.toggle('hidden', has); $('#change').classList.toggle('hidden', !has);
-}
+// image: chọn / kéo thả / dán, tự nén — 2 ô: ảnh sản phẩm ('') và ảnh trang chủ ('-home')
 async function compress(file, max = 1600, q = .85) {
   const bmp = await createImageBitmap(file);
   const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
@@ -420,23 +427,40 @@ async function compress(file, max = 1600, q = .85) {
   c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
   return await new Promise(r => c.toBlob(r, 'image/jpeg', q));
 }
-async function takeFile(f) {
-  if (!f || !f.type.startsWith('image/')) return toast('Hãy chọn file ảnh', true);
-  try {
-    pendingBlob = await compress(f);
-    setPreview(URL.createObjectURL(pendingBlob)); $('#img-url').value = '';
-    toast(`Đã chọn ảnh (${Math.round(pendingBlob.size / 1024)} KB)`);
-  } catch (e) { toast('Không đọc được ảnh này', true); }
+function makePicker(k) {
+  const q = id => $('#' + id + k), drop = q('drop'), clear = $('#clear' + k);
+  const P = { blob: null, url: '' };
+  const show = src => {
+    const has = !!src;
+    q('preview').src = src || ''; q('preview').classList.toggle('hidden', !has);
+    q('hint').classList.toggle('hidden', has); q('change').classList.toggle('hidden', !has);
+    if (clear) clear.classList.toggle('hidden', !has);
+  };
+  P.load = url => { P.blob = null; P.url = url || ''; q('img-url').value = url && !url.startsWith('data:') ? url : ''; show(url ? S.imgUrl(url, 1000) : ''); };
+  P.has = () => !!(P.blob || P.url);
+  // trả về link ảnh cuối cùng; tải ảnh mới lên nếu vừa chọn
+  P.result = async name => P.blob ? await S.upload(P.blob, name) : P.url;
+  P.take = async f => {
+    if (!f || !f.type.startsWith('image/')) return toast('Hãy chọn file ảnh', true);
+    try {
+      P.blob = await compress(f); P.url = '';
+      show(URL.createObjectURL(P.blob)); q('img-url').value = '';
+      toast(`Đã chọn ảnh (${Math.round(P.blob.size / 1024)} KB)`);
+    } catch (e) { toast('Không đọc được ảnh này', true); }
+  };
+  drop.addEventListener('click', () => q('file').click());
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q('file').click(); } });
+  q('file').addEventListener('change', e => { P.take(e.target.files[0]); e.target.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => P.take(e.dataTransfer.files[0]));
+  q('img-url').addEventListener('change', e => { const v = e.target.value.trim(); if (v) { P.blob = null; P.url = v; show(v); } });
+  if (clear) clear.addEventListener('click', () => P.load(''));
+  return P;
 }
-const drop = $('#drop');
-drop.addEventListener('click', () => $('#file').click());
-drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('#file').click(); } });
-$('#file').addEventListener('change', e => { takeFile(e.target.files[0]); e.target.value = ''; });
-['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
-['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
-drop.addEventListener('drop', e => takeFile(e.dataTransfer.files[0]));
-document.addEventListener('paste', e => { if (!sheet.classList.contains('open')) return; const f = [...e.clipboardData.files][0]; if (f) takeFile(f); });
-$('#img-url').addEventListener('change', e => { const v = e.target.value.trim(); if (v) { pendingBlob = null; setPreview(v); } });
+const pic = makePicker(''), picHome = makePicker('-home');
+// dán ảnh (Ctrl/Cmd+V) vào ô ảnh sản phẩm
+document.addEventListener('paste', e => { if (!sheet.classList.contains('open')) return; const f = [...e.clipboardData.files][0]; if (f) pic.take(f); });
 
 const slug = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
 
@@ -449,16 +473,16 @@ $('#form').addEventListener('submit', async e => {
   if (!type) return err('Vui lòng nhập loại (Áo, Quần, Giày…).');
   if (!(price >= 0)) return err('Vui lòng nhập giá thuê.');
   if (pmax && pmax <= price) return err('“Giá đến” phải lớn hơn giá thuê.');
-  if (!pendingBlob && !$('#img-url').value.trim() && !editing?.img) return err('Vui lòng thêm ảnh sản phẩm.');
+  if (!pic.has()) return err('Vui lòng thêm ảnh sản phẩm.');
   if (!sizes.length) sizes = ['Freesize'];
-  $('#save').disabled = true; $('#save').textContent = pendingBlob ? 'Đang tải ảnh…' : 'Đang lưu…';
+  $('#save').disabled = true; $('#save').textContent = pic.blob || picHome.blob ? 'Đang tải ảnh…' : 'Đang lưu…';
   try {
-    let img = $('#img-url').value.trim() || editing?.img || '';
-    if (pendingBlob) img = await S.upload(pendingBlob, (slug(name) || 'anh') + '.jpg');
+    const img = await pic.result((slug(name) || 'anh') + '.jpg');
+    const homeImg = await picHome.result((slug(name) || 'anh') + '-trang-chu.jpg');
     const p = {
       id: editing?.id || `${slug(name) || 'sp'}-${Math.random().toString(36).slice(2, 6)}`,
       cat: $('#f-cat').value, type, name, sub: $('#f-sub').value.trim(), price, priceMax: pmax || null,
-      img, sizes, layout: `${$('#f-w').value} ${shape}`, desc: $('#f-desc').value.trim(),
+      img, homeImg, sizes, layout: `${$('#f-w').value} ${shape}`, desc: $('#f-desc').value.trim(),
       spec: [...document.querySelectorAll('.spec-row')].map(r => [...r.querySelectorAll('input')].map(i => i.value.trim())).filter(([k, v]) => k || v),
       sort: editing?.sort ?? (Math.max(0, ...items.map(x => x.sort)) + 10),
       visible: $('#f-vis').checked,

@@ -49,13 +49,13 @@
   const BUCKET = cfg.BUCKET || 'products';
 
   // Ảnh Unsplash nhận tham số kích thước; ảnh khác giữ nguyên
-  const imgUrl = (url, w = 900) => !url ? '' : url.startsWith(U) ? `${url}&w=${w}` : url;
+  const imgUrl = (url, w = 900) => !url ? '' : url.startsWith(U) ? `${url}${url.includes('?') ? '&' : '?'}w=${w}` : url;
 
   const fromRow = r => ({ id:r.id, cat:r.cat, type:r.type, name:r.name, sub:r.sub || '', price:r.price, priceMax:r.price_max,
-    img:r.img_url || '', sizes:r.sizes || [], layout:r.layout || 'w4 r2', desc:r.description || '', spec:r.spec || [],
+    img:r.img_url || '', homeImg:r.home_img || '', sizes:r.sizes || [], layout:r.layout || 'w4 r2', desc:r.description || '', spec:r.spec || [],
     sort:r.sort ?? 0, visible:r.visible !== false });
   const toRow = p => ({ id:p.id, cat:p.cat, type:p.type, name:p.name, sub:p.sub, price:p.price, price_max:p.priceMax || null,
-    img_url:p.img, sizes:p.sizes, layout:p.layout, description:p.desc, spec:p.spec, sort:p.sort, visible:p.visible });
+    img_url:p.img, home_img:p.homeImg || null, sizes:p.sizes, layout:p.layout, description:p.desc, spec:p.spec, sort:p.sort, visible:p.visible });
 
   const loadScript = src => new Promise((res, rej) => {
     const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('Không tải được ' + src));

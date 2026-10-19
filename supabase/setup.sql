@@ -12,6 +12,7 @@ create table if not exists public.products (
   price       integer not null check (price >= 0),
   price_max   integer,
   img_url     text,
+  home_img    text,          -- ảnh riêng cho trang chủ (bỏ trống = dùng img_url)
   sizes       text[] default '{}',
   layout      text default 'w4 r2',
   description text default '',
@@ -20,6 +21,8 @@ create table if not exists public.products (
   visible     boolean default true,
   updated_at  timestamptz default now()
 );
+-- project tạo trước khi có cột ảnh trang chủ
+alter table public.products add column if not exists home_img text;
 
 -- 2) Danh sách email được quyền quản trị
 create table if not exists public.admins (email text primary key);
