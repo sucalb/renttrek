@@ -37,6 +37,12 @@ drop policy if exists "admin all" on public.products;
 create policy "public read" on public.products for select using (visible or public.is_admin());
 create policy "admin all"   on public.products for all using (public.is_admin()) with check (public.is_admin());
 
+-- 3b) Cấp quyền truy cập bảng cho web (RLS ở trên vẫn giới hạn ai làm được gì)
+grant usage on schema public to anon, authenticated;
+grant select on public.products to anon, authenticated;
+grant insert, update, delete on public.products to authenticated;
+grant execute on function public.is_admin() to anon, authenticated;
+
 -- 4) Kho ảnh công khai; chỉ admin được tải lên / xoá
 insert into storage.buckets (id, name, public) values ('products', 'products', true)
 on conflict (id) do update set public = true;
